@@ -39,8 +39,6 @@ RUN yarn install --immutable
 # Copy built files from builder
 COPY --from=builder /app/packages/app/dist ./packages/app/dist
 COPY --from=builder /app/packages/backend/dist ./packages/backend/dist
-COPY --from=builder /app/packages/app/dist-types ./packages/app/dist-types
-COPY --from=builder /app/packages/backend/dist-types ./packages/backend/dist-types
 
 # Copy configuration files
 COPY app-config.yaml ./
