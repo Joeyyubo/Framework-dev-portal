@@ -1,0 +1,11 @@
+# 本地开发配置文件
+# 此文件会被自动加载，用于覆盖 app-config.yaml 中的配置
+# 主要用于确保开发环境的认证配置正确
+
+auth:
+  environment: development
+  providers:
+    guest:
+      # 确保 guest 认证在开发环境中可用
+      dangerouslyAllowOutsideDevelopment: true
+      userEntityRef: user:default/guest

@@ -1,19 +1,20 @@
 app:
-  title: {{ values.portalName }} Developer Hub
-  baseUrl: http://localhost:7007
+  title: Framework Developer Hub
+  baseUrl: http://localhost:3005
 organization:
-  name: {{ values.portalName }} Organization
+  name: Framework Organization
 backend:
-  baseUrl: http://localhost:7007
+  baseUrl: http://localhost:7010
   listen:
-    port: 7007
+    port: 7010
+    host: 0.0.0.0
   csp:
     connect-src:
       - "'self'"
       - 'http:'
       - 'https:'
   cors:
-    origin: http://localhost:3000
+    origin: http://localhost:3005
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   database:
