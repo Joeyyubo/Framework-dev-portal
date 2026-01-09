@@ -35,8 +35,11 @@ WORKDIR /app
 
 RUN corepack enable
 
-# 6. 从构建阶段复制所有产物
+# 6. 从构建阶段复制所有产物（包括 node_modules，因为 backstage-cli 需要 @backstage/cli）
 COPY --from=builder /app ./
+
+# 确保在运行阶段也有必要的依赖（backstage-cli 在 devDependencies 中）
+# 由于我们复制了整个 /app，node_modules 已经包含在内
 
 # 7. 设置生产环境变量
 ENV NODE_ENV=production

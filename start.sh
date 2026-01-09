@@ -10,5 +10,7 @@ fi
 # 确保监听 0.0.0.0
 export APP_CONFIG_backend_listen_host=${APP_CONFIG_backend_listen_host:-0.0.0.0}
 
-# 启动后端
-exec node packages/backend/dist/index.cjs.js --config app-config.yaml
+# 启动后端 - 使用 yarn workspace 命令，这会调用 backstage-cli package start
+# 这会正确处理 tar.gz 包并启动服务
+cd /app
+exec yarn workspace backend start
