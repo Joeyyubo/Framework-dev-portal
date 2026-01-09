@@ -1,0 +1,42 @@
+name: Deploy RHDH Instance
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build application
+        run: yarn build
+
+      - name: Deploy to Railway
+        if: env.RAILWAY_TOKEN != ''
+        uses: bervProject/railway-deploy@v1.0.0
+        with:
+          railway_token: 
+          service: 
+
+      # Alternative: Deploy to Render
+      # - name: Deploy to Render
+      #   if: env.RENDER_SERVICE_ID != ''
+      #   uses: johnbeynon/render-deploy@v1.1.0
+      #   with:
+      #     service-id: 
+      #     api-key: 
+
+

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ values.portalName }}-rhdh
+  labels:
+    app: {{ values.portalName }}-rhdh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ values.portalName }}-rhdh
+  template:
+    metadata:
+      labels:
+        app: {{ values.portalName }}-rhdh
+    spec:
+      containers:
+      - name: rhdh-backend
+        image: {{ values.portalName }}-rhdh:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7007
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: APP_CONFIG_app_baseUrl
+          value: "http://localhost:7007"
+        - name: APP_CONFIG_backend_baseUrl
+          value: "http://localhost:7007"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - name: app-config
+          mountPath: /app/app-config.yaml
+          subPath: app-config.yaml
+        - name: database-storage
+          mountPath: /app/database
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 7007
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 7007
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: app-config
+        configMap:
+          name: {{ values.portalName }}-rhdh-config
+      - name: database-storage
+        persistentVolumeClaim:
+          claimName: {{ values.portalName }}-rhdh-database
+
+

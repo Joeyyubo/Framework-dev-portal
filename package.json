@@ -1,0 +1,28 @@
+{
+  "name": "{{ values.portalName }}-rhdh",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "dev": "concurrently \"yarn:dev:*\"",
+    "dev:backend": "yarn workspace backend start",
+    "dev:frontend": "yarn workspace app start",
+    "build": "yarn workspace backend build && yarn workspace app build",
+    "start": "yarn workspace backend start",
+    "clean": "yarn workspace backend clean && yarn workspace app clean"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "devDependencies": {
+    "@backstage/cli": "^0.34.1",
+    "concurrently": "^9.2.1"
+  },
+  "packageManager": "yarn@3.8.7"
+}
+
+

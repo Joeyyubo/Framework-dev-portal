@@ -1,0 +1,48 @@
+app:
+  title: {{ values.portalName }} Developer Hub
+  baseUrl: http://localhost:7007
+organization:
+  name: {{ values.portalName }} Organization
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+  csp:
+    connect-src:
+      - "'self'"
+      - 'http:'
+      - 'https:'
+  cors:
+    origin: http://localhost:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: better-sqlite3
+    connection:
+      directory: .
+proxy:
+  skipInvalidProxies: true
+  endpoints: {}
+techdocs:
+  builder: external
+integrations:
+  github:
+    - host: github.com
+      # Configure your GitHub token here
+      # token: ${GITHUB_TOKEN}
+auth:
+  environment: development
+  providers:
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+      userEntityRef: user:default/guest
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+  rules:
+    - allow: [Component, System, Group, Resource, Location, Template, API]
+  locations:
+    - type: file
+      target: ./catalog-info.yaml
+
+

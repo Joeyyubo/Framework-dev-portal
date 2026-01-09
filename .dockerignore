@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-types
+*.log
+.env
+.env.local
+.git
+.gitignore
+README.md
+.vscode
+.idea
+coverage
+*.db
+*.sqlite
+*.sqlite3
+
+
