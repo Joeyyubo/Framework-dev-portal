@@ -55,4 +55,4 @@ ENV NODE_ENV=production
 ENV APP_CONFIG_app_baseUrl=${APP_CONFIG_app_baseUrl}
 
 # Start the backend - Explicitly pointing to the index file to avoid MODULE_NOT_FOUND
-CMD ["node", "packages/backend/dist/index.cjs.js"]
+CMD ["yarn", "workspace", "backend", "start"]
