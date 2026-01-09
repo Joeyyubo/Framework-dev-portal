@@ -7,6 +7,7 @@ backend:
   baseUrl: http://localhost:7010
   listen:
     port: 7010
+    host: 0.0.0.0
   csp:
     connect-src:
       - "'self'"

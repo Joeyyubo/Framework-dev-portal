@@ -42,9 +42,12 @@ COPY --from=builder /app ./
 ENV NODE_ENV=production
 
 # 8. 修改暴露的端口
-# 根据你的 app-config.yaml，后端监听端口为 7010
+# Railway 会通过 PORT 环境变量提供端口，这里使用动态端口
+# 但 EXPOSE 需要一个具体值，Railway 会自动映射
 EXPOSE 7010
 
 # 9. 修正启动命令
-# 直接指定入口文件路径，并显式加载配置文件以确保环境一致
-CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "app-config.yaml"]
+# 使用启动脚本来处理 Railway 的 PORT 环境变量
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+CMD ["/app/start.sh"]
