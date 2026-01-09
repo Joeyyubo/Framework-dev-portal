@@ -3,15 +3,16 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# Enable corepack for Yarn 3.8.7
+RUN corepack enable
+
 # Copy package files
-COPY package.json yarn.lock* ./
-COPY .yarnrc.yml ./ 
+COPY package.json yarn.lock* .yarnrc.yml ./
 COPY .yarn ./.yarn
 COPY packages/app/package.json ./packages/app/
 COPY packages/backend/package.json ./packages/backend/
 
-# 启用 Corepack 并安装所有依赖
-RUN corepack enable
+# Install dependencies
 RUN yarn install --immutable
 
 # Copy source code
@@ -25,15 +26,16 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json yarn.lock* ./
-COPY .yarnrc.yml ./
+# Enable corepack in runner
+RUN corepack enable
+
+# Copy package files for runtime
+COPY package.json yarn.lock* .yarnrc.yml ./
 COPY .yarn ./.yarn
 COPY packages/app/package.json ./packages/app/
 COPY packages/backend/package.json ./packages/backend/
 
-# 再次启用 Corepack 并安装依赖
-RUN corepack enable
+# Install dependencies (Yarn 3 uses --immutable instead of --production)
 RUN yarn install --immutable
 
 # Copy built files from builder
@@ -49,9 +51,8 @@ EXPOSE 7007
 
 # Set environment variables
 ENV NODE_ENV=production
-
-# 这里的 URL 建议通过 Railway 的环境变量注入，不要写死
+# URL will be injected via Railway environment variables
 ENV APP_CONFIG_app_baseUrl=${APP_CONFIG_app_baseUrl}
 
-# Start the backend
-CMD ["node", "packages/backend"]
+# Start the backend - Explicitly pointing to the index file to avoid MODULE_NOT_FOUND
+CMD ["node", "packages/backend/dist/index.cjs.js"]
