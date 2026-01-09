@@ -5,11 +5,14 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json yarn.lock* ./
+COPY .yarnrc.yml ./ 
+COPY .yarn ./.yarn
 COPY packages/app/package.json ./packages/app/
 COPY packages/backend/package.json ./packages/backend/
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
+# 启用 Corepack 并安装所有依赖
+RUN corepack enable
+RUN yarn install --immutable
 
 # Copy source code
 COPY . .
@@ -24,11 +27,14 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json yarn.lock* ./
+COPY .yarnrc.yml ./
+COPY .yarn ./.yarn
 COPY packages/app/package.json ./packages/app/
 COPY packages/backend/package.json ./packages/backend/
 
-# Install production dependencies only
-RUN yarn install --frozen-lockfile --production
+# 再次启用 Corepack 并安装依赖
+RUN corepack enable
+RUN yarn install --immutable
 
 # Copy built files from builder
 COPY --from=builder /app/packages/app/dist ./packages/app/dist
@@ -45,9 +51,9 @@ EXPOSE 7007
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV APP_CONFIG_app_baseUrl=http://localhost:7007
 
-# Start the backend (which serves both frontend and backend)
+# 这里的 URL 建议通过 Railway 的环境变量注入，不要写死
+ENV APP_CONFIG_app_baseUrl=${APP_CONFIG_app_baseUrl}
+
+# Start the backend
 CMD ["node", "packages/backend"]
-
-
