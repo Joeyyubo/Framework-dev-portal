@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "concurrently \"yarn:dev:*\"",
-    "dev:backend": "yarn workspace backend start",
-    "dev:frontend": "PORT=3005 yarn workspace app start",
+    "dev:backend": "NODE_ENV=development yarn workspace backend start",
+    "dev:frontend": "NODE_ENV=development PORT=3005 yarn workspace app start",
     "build": "yarn workspace backend build && yarn workspace app build",
     "start": "yarn workspace backend start",
     "clean": "yarn workspace backend clean && yarn workspace app clean"

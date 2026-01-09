@@ -12,6 +12,7 @@ import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import React from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import { FlatRoutes } from '@backstage/core-app-api';
+import { apis } from './apis';
 
 // Ensure createApp and related calls are only made once, even with hot reloading
 // Use global to persist across hot reloads
@@ -31,7 +32,7 @@ function getApp() {
   }
   
   const appInstance = createApp({
-    apis: [],
+    apis: apis, // Import APIs from apis.ts (app-defaults also includes default APIs)
     // bindRoutes is optional - scaffolder routes are automatically available
     // Remove bindRoutes if it causes errors with external route keys
   });
