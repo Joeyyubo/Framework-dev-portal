@@ -11,20 +11,11 @@ import { SearchPage } from '@backstage/plugin-search';
 import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import React from 'react';
 import { Navigate, Route } from 'react-router-dom';
-import { FlatRoutes } from '@backstage/core-app-api';
+import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 
 const app = createApp({
   apis: [],
-  bindRoutes: ({ bind }) => {
-    bind('catalog', {
-      createComponent: 'scaffolder',
-      createFromTemplate: 'scaffolder',
-    });
-  },
 });
-
-const AppProvider = app.getProvider();
-const AppRouter = app.getRouter();
 
 const routes = (
   <FlatRoutes>
@@ -47,11 +38,9 @@ export default app.createRoot(
   <>
     <AlertDisplay />
     <OAuthRequestDialog />
-    <AppProvider>
-      <AppRouter>
-        {routes}
-      </AppRouter>
-    </AppProvider>
+    <AppRouter>
+      {routes}
+    </AppRouter>
   </>,
 );
 

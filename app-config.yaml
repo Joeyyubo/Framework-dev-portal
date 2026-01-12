@@ -1,8 +1,8 @@
 app:
-  title: {{ values.portalName }} Developer Hub
-  baseUrl: http://localhost:7007
+  title: Developer Hub
+  baseUrl: http://localhost:3003
 organization:
-  name: {{ values.portalName }} Organization
+  name: Developer Hub Organization
 backend:
   baseUrl: http://localhost:7007
   listen:
@@ -13,9 +13,11 @@ backend:
       - 'http:'
       - 'https:'
   cors:
-    origin: http://localhost:3000
+    origin: http://localhost:3003
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true
   database:
     client: better-sqlite3
     connection:
@@ -29,16 +31,16 @@ integrations:
   github:
     - host: github.com
       # Configure your GitHub token here
-      # token: ${GITHUB_TOKEN}
+      token: ${GITHUB_TOKEN}
 auth:
   environment: development
+  allowGuestAccess: true
   providers:
     guest:
+      enabled: true
       dangerouslyAllowOutsideDevelopment: true
       userEntityRef: user:default/guest
 catalog:
-  import:
-    entityFilename: catalog-info.yaml
   rules:
     - allow: [Component, System, Group, Resource, Location, Template, API]
   locations:
